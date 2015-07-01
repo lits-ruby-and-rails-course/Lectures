@@ -74,7 +74,7 @@ Or more complex example:
 
 ```ruby
 class Profile
-  attr_accessor :name, :age, :email, password 
+  attr_accessor :name, :age, :email, :password 
 end
 
 users = [{
@@ -97,7 +97,7 @@ users = [{
 profiles = users.map do |user_setting|
 	profile = Profile.new
 	user_setting.each_key do |key|
-		profile.send(key, user_settings[key])
+		profile.send(key+'=', user_settings[key])
 	end
 	profile
 end
