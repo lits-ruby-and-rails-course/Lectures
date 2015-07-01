@@ -26,7 +26,7 @@ Tools:
 
 - RSpec
 - MiniTest
-- Jasmine
+- Jasmine(JavaScript)
 
 Unit tests
 ----------------
@@ -43,3 +43,16 @@ Tools:
 
 ----------------
 ----------------
+
+RSpec
+====================
+
+> **Topics:**
+
+>- Install Rspec;
+>- Basic Structure;
+>- Configuration & Matchers;
+>- DRY Specs;
+>- Hooks & Tags;
+>- Mocks & Stubs;
+>- Custom Matchers;
