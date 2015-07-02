@@ -1,6 +1,4 @@
-Ruby Metaprogramming
-====================
-
+#Ruby Metaprogramming
 
 > **Programming of `'Programming'`.**
 
@@ -10,9 +8,7 @@ Ruby Metaprogramming
 >- Avoid repetitious coding to keep your program DRY.
 
 
-
-The Object Model
-----------------
+##The Object Model
 
 '**Practically everything in Ruby is an Object!**'
 with the exception of control structures
@@ -53,13 +49,16 @@ end
 
 1.better_debug #=> "------------1"
 'email@example.com'.better_debug #=> "------------email@example.com"
+```
 
+```ruby
 class Greeting
 	def hello
 	  puts 'hello'
 	end
 end
 
+#Monkeypatching
 class Greeting
 	def hello
 		puts 'Hello !!!11'
@@ -76,6 +75,8 @@ g = Greeting.new
 g.hello #=> 'Hello !!!11'
 g.bye #=> 'Bye !!!'
 ```
+
+---
 
 ### Callable objects
 
@@ -128,14 +129,11 @@ profiles = users.map do |user_setting|
 	end
 	profile
 end
-
 ``` 
 
 -------
--------
 
-Methods
-----------
+##Methods
 
 Like in SmallTalk Ruby has this idea of sending messages between objects.
 
@@ -170,7 +168,7 @@ puts(obj.hello('Matz')) # => Matz
 
 ---
 
-#### method missing
+#### method missing aka Ghost Method
 
 ```ruby
 class Rubyist
@@ -245,14 +243,11 @@ end
 
 cat = Cat.new('Tom')
 cat.talk() #=> Tom may  
-    
 ```
 
 ----
-----
 
-Blocks
-----------
+##Blocks
 
 One of the most confusing parts of learning basic Ruby (until your AHA! moment) is understanding what blocks are and how they work
 
@@ -264,11 +259,9 @@ Commonly used as inputs to some of the iterators you've no doubt worked with lik
 > - Closures
 > - DSL's 
 
----
+### Defining and calling blocks
 
-#### Defining and calling blocks
-
-You declare a block using squiggly braces {} if it's on one line or do ... end if it's on multiple lines
+You declare a block using squiggly braces {} if it's on one line or `do ... end` if it's on multiple lines
 
 ```ruby
 [1,2,3].each { |num| print "#{num}! " } #=> 1! 2! 3! =>[1,2,3]
@@ -290,7 +283,7 @@ Just like ***methods***, some ***blocks*** take inputs, others do not. Some retu
 
 ---
 
-##### yield
+### yield
 
 ```ruby
 class Array 
@@ -315,7 +308,7 @@ yield if block_given?
 
 ---
 
-##### Procs, aka Procedures!
+### Procs, aka Procedures!
 
 What if you want to pass TWO blocks to your function? What if you want to save your block to a variable so you can use it again later? 
 
@@ -355,6 +348,16 @@ my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
 ```
 
 ---
+
+###Scope gates
+
+
+---
+
+###Flat Scope
+
+
+
 ---
 
 
