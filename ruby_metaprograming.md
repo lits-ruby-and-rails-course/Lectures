@@ -384,9 +384,42 @@ local_variables  # => ["v1", "obj"]
 
 ---
 
-###Flat Scope
+###Flat Scope / Shared Scope
 
+Technicks for sharing variable between scopes and injecting variable into scope
 
+```ruby
+# define a variable to share
+shared = "a shared variable"
+
+# use closures (blocks) to ensure access to the variable
+Example = Class.new do
+  puts shared # => a shared variable
+
+  # set a reference to the eigenclass so we can later define a class method
+  # while retaining access to the shared variable
+  eigenclass = class << self
+    # this is a scope gate without access to the shared variable
+    self
+  end
+
+  # use the eigenclass to define a class method
+  # with access to the shared variable
+  eigenclass.class_eval do
+    define_method :class_method do
+      shared
+    end
+  end
+
+  # define an instance method with access to the shared variable
+  define_method :instance_method do
+    shared
+  end
+end
+
+Example.class_method # => a shared variable
+Example.new.instance_method # => a shared variable
+```
 
 ---
 
