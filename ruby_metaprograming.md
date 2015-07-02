@@ -351,6 +351,36 @@ my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
 
 ###Scope gates
 
+There are exactly three places where a program leaves the previous scope behind and opens a new one:
+- Class definitions 
+- Module definitions 
+- Methods
+
+```ruby
+v1 = 1
+
+local_variables  # => ["v1"]
+
+class MyClass  # SCOPE GATE: entering class
+  v2 = 2
+  local_variables  # => ["v2"]
+  
+  def my_method  # SCOPE GATE: entering def
+    v3 = 3
+    local_variables
+  end  # SCOPE GATE: leaving def
+
+  local_variables  # => ["v2"]
+
+end  # SCOPE GATE: leaving class
+
+local_variables  # => ["v1"]
+
+obj = MyClass.new
+obj.my_method  # => ["v3"]
+
+local_variables  # => ["v1", "obj"]
+```
 
 ---
 
