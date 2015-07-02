@@ -53,6 +53,28 @@ end
 
 1.better_debug #=> "------------1"
 'email@example.com'.better_debug #=> "------------email@example.com"
+
+class Greeting
+	def hello
+	  puts 'hello'
+	end
+end
+
+class Greeting
+	def hello
+		puts 'Hello !!!11'
+	end
+end
+
+class Greeting
+	def bye
+		puts 'Bye !!!'
+	end
+end
+
+g = Greeting.new
+g.hello #=> 'Hello !!!11'
+g.bye #=> 'Bye !!!'
 ```
 
 ### Callable objects
@@ -60,8 +82,13 @@ end
 When you call a method, you usually do so using the standard dot notation:
 
 ```ruby
-class MyClass  def my_method(my_arg)    my_arg * 2  end
-endobj = MyClass.newobj.my_method(3)  # => 6
+class MyClass
+  def my_method(my_arg)
+    my_arg * 2
+  end
+end
+obj = MyClass.new
+obj.my_method(3)  # => 6
 ```
 
 but there is an alternative:
@@ -123,7 +150,10 @@ Like in SmallTalk Ruby has this idea of sending messages between objects.
 ***How to define methods dynamically and remove the duplicated code.***
 
 ```ruby
-define_method :my_method do |my_arg|	my_arg * 3endmy_method(2)  # => 6
+define_method :my_method do |my_arg|
+	my_arg * 3
+end
+my_method(2)  # => 6
 ```
 
 Inside different receiver
@@ -316,8 +346,12 @@ Closure is just the umbrella term for all four of those things:
 which all somehow involve passing around chunks of code.
 
 ```ruby
-def my_method	x = "Goodbye"	yield("cruel" )
-endx = "Hello"my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
+def my_method
+	x = "Goodbye"
+	yield("cruel" )
+end
+x = "Hello"
+my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
 ```
 
 ---
@@ -428,9 +462,13 @@ Coding the code.
 ***eval()*** executes any string of the code, passed as a string.
 Executing a ***string of Ruby code*** is a pretty pointless, but the power of **eval()** becomes apparent when you ***compute(create)*** your Strings of Code ***on the fly***
 
-```rubyarray = [10, 20]element = 30eval("array << element") # => [10, 20, 30]
+```ruby
+array = [10, 20]
+element = 30
+eval("array << element") # => [10, 20, 30]
 ```
-The Capistrano Example (ruby metaprograming book)
+
+The Capistrano Example (ruby metaprograming book)
 
 Capistrano is a framework for automating the deployment of Ruby applications.
 
@@ -438,7 +476,9 @@ One of default tasks capistrano provides is: deploy:update. In older versions de
 
 ```ruby
 namespace :deploy do
-  task :update do    # ...  end
+  task :update do
+    # ...
+  end
 end
 ``` 
 
@@ -449,9 +489,15 @@ map = {
 	"update" => "deploy:update",
 	"restart" => "deploy:restart",
 	"cleanup" => "deploy:cleanup",
-	# ...}
-map.each do |old, new|
-  # ...  eval "task(#{old.inspect}) do    warn "[DEPRECATED] `#{old}' is deprecated. Use `#{new}' instead."    find_and_execute_task(#{new.inspect})  end"
+	# ...
+}
+
+map.each do |old, new|
+  # ...
+  eval "task(#{old.inspect}) do
+    warn "[DEPRECATED] `#{old}' is deprecated. Use `#{new}' instead."
+    find_and_execute_task(#{new.inspect})
+  end"
 end
 ```
 
