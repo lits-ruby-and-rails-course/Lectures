@@ -1,6 +1,4 @@
-Ruby Metaprogramming
-====================
-
+#Ruby Metaprogramming
 
 > **Programming of `'Programming'`.**
 
@@ -10,9 +8,7 @@ Ruby Metaprogramming
 >- Avoid repetitious coding to keep your program DRY.
 
 
-
-The Object Model
-----------------
+##The Object Model
 
 '**Practically everything in Ruby is an Object!**'
 with the exception of control structures
@@ -55,13 +51,45 @@ end
 'email@example.com'.better_debug #=> "------------email@example.com"
 ```
 
+```ruby
+class Greeting
+	def hello
+	  puts 'hello'
+	end
+end
+
+#Monkeypatching
+class Greeting
+	def hello
+		puts 'Hello !!!11'
+	end
+end
+
+class Greeting
+	def bye
+		puts 'Bye !!!'
+	end
+end
+
+g = Greeting.new
+g.hello #=> 'Hello !!!11'
+g.bye #=> 'Bye !!!'
+```
+
+---
+
 ### Callable objects
 
 When you call a method, you usually do so using the standard dot notation:
 
 ```ruby
-class MyClass  def my_method(my_arg)    my_arg * 2  end
-endobj = MyClass.newobj.my_method(3)  # => 6
+class MyClass
+  def my_method(my_arg)
+    my_arg * 2
+  end
+end
+obj = MyClass.new
+obj.my_method(3)  # => 6
 ```
 
 but there is an alternative:
@@ -101,14 +129,11 @@ profiles = users.map do |user_setting|
 	end
 	profile
 end
-
 ``` 
 
 -------
--------
 
-Methods
-----------
+##Methods
 
 Like in SmallTalk Ruby has this idea of sending messages between objects.
 
@@ -123,7 +148,10 @@ Like in SmallTalk Ruby has this idea of sending messages between objects.
 ***How to define methods dynamically and remove the duplicated code.***
 
 ```ruby
-define_method :my_method do |my_arg|	my_arg * 3endmy_method(2)  # => 6
+define_method :my_method do |my_arg|
+	my_arg * 3
+end
+my_method(2)  # => 6
 ```
 
 Inside different receiver
@@ -140,7 +168,7 @@ puts(obj.hello('Matz')) # => Matz
 
 ---
 
-#### method missing
+#### method missing aka Ghost Method
 
 ```ruby
 class Rubyist
@@ -215,14 +243,11 @@ end
 
 cat = Cat.new('Tom')
 cat.talk() #=> Tom may  
-    
 ```
 
 ----
-----
 
-Blocks
-----------
+##Blocks
 
 One of the most confusing parts of learning basic Ruby (until your AHA! moment) is understanding what blocks are and how they work
 
@@ -234,11 +259,9 @@ Commonly used as inputs to some of the iterators you've no doubt worked with lik
 > - Closures
 > - DSL's 
 
----
+### Defining and calling blocks
 
-#### Defining and calling blocks
-
-You declare a block using squiggly braces {} if it's on one line or do ... end if it's on multiple lines
+You declare a block using squiggly braces {} if it's on one line or `do ... end` if it's on multiple lines
 
 ```ruby
 [1,2,3].each { |num| print "#{num}! " } #=> 1! 2! 3! =>[1,2,3]
@@ -260,7 +283,7 @@ Just like ***methods***, some ***blocks*** take inputs, others do not. Some retu
 
 ---
 
-##### yield
+### yield
 
 ```ruby
 class Array 
@@ -285,7 +308,7 @@ yield if block_given?
 
 ---
 
-##### Procs, aka Procedures!
+### Procs, aka Procedures!
 
 What if you want to pass TWO blocks to your function? What if you want to save your block to a variable so you can use it again later? 
 
@@ -316,11 +339,88 @@ Closure is just the umbrella term for all four of those things:
 which all somehow involve passing around chunks of code.
 
 ```ruby
-def my_method	x = "Goodbye"	yield("cruel" )
-endx = "Hello"my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
+def my_method
+	x = "Goodbye"
+	yield("cruel" )
+end
+x = "Hello"
+my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
 ```
 
 ---
+
+###Scope gates
+
+There are exactly three places where a program leaves the previous scope behind and opens a new one:
+- Class definitions 
+- Module definitions 
+- Methods
+
+```ruby
+v1 = 1
+
+local_variables  # => ["v1"]
+
+class MyClass  # SCOPE GATE: entering class
+  v2 = 2
+  local_variables  # => ["v2"]
+  
+  def my_method  # SCOPE GATE: entering def
+    v3 = 3
+    local_variables
+  end  # SCOPE GATE: leaving def
+
+  local_variables  # => ["v2"]
+
+end  # SCOPE GATE: leaving class
+
+local_variables  # => ["v1"]
+
+obj = MyClass.new
+obj.my_method  # => ["v3"]
+
+local_variables  # => ["v1", "obj"]
+```
+
+---
+
+###Flat Scope / Shared Scope
+
+Technicks for sharing variable between scopes and injecting variable into scope
+
+```ruby
+# define a variable to share
+shared = "a shared variable"
+
+# use closures (blocks) to ensure access to the variable
+Example = Class.new do
+  puts shared # => a shared variable
+
+  # set a reference to the eigenclass so we can later define a class method
+  # while retaining access to the shared variable
+  eigenclass = class << self
+    # this is a scope gate without access to the shared variable
+    self
+  end
+
+  # use the eigenclass to define a class method
+  # with access to the shared variable
+  eigenclass.class_eval do
+    define_method :class_method do
+      shared
+    end
+  end
+
+  # define an instance method with access to the shared variable
+  define_method :instance_method do
+    shared
+  end
+end
+
+Example.class_method # => a shared variable
+Example.new.instance_method # => a shared variable
+```
+
 ---
 
 
@@ -428,9 +528,13 @@ Coding the code.
 ***eval()*** executes any string of the code, passed as a string.
 Executing a ***string of Ruby code*** is a pretty pointless, but the power of **eval()** becomes apparent when you ***compute(create)*** your Strings of Code ***on the fly***
 
-```rubyarray = [10, 20]element = 30eval("array << element") # => [10, 20, 30]
+```ruby
+array = [10, 20]
+element = 30
+eval("array << element") # => [10, 20, 30]
 ```
-The Capistrano Example (ruby metaprograming book)
+
+The Capistrano Example (ruby metaprograming book)
 
 Capistrano is a framework for automating the deployment of Ruby applications.
 
@@ -438,7 +542,9 @@ One of default tasks capistrano provides is: deploy:update. In older versions de
 
 ```ruby
 namespace :deploy do
-  task :update do    # ...  end
+  task :update do
+    # ...
+  end
 end
 ``` 
 
@@ -449,9 +555,15 @@ map = {
 	"update" => "deploy:update",
 	"restart" => "deploy:restart",
 	"cleanup" => "deploy:cleanup",
-	# ...}
-map.each do |old, new|
-  # ...  eval "task(#{old.inspect}) do    warn "[DEPRECATED] `#{old}' is deprecated. Use `#{new}' instead."    find_and_execute_task(#{new.inspect})  end"
+	# ...
+}
+
+map.each do |old, new|
+  # ...
+  eval "task(#{old.inspect}) do
+    warn "[DEPRECATED] `#{old}' is deprecated. Use `#{new}' instead."
+    find_and_execute_task(#{new.inspect})
+  end"
 end
 ```
 
