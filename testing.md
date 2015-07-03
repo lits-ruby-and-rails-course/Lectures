@@ -102,6 +102,16 @@ describe Hash do
 end
 ```
 
+#### example output
+
+```bash
+$ spec spec/hash_spec.rb
+
+Finished in 6.0e-06 seconds
+
+0 examples, 0 failures
+```
+
 #### context
 
 The ***context*** method does the same thing by letting you contextualize a block of your tests.
@@ -281,6 +291,57 @@ Hooks & Tags
 
 ####Filtering examples
 
+The simplest use case is to ***tag*** certain examples with ***keywords***, and then tell RSpec to decide whether to run examples based on that keyword.
+
+For example, you might focus your next test run on only those examples you are currently developing by using a “focus” keyword:
+
+```ruby
+RSpec.configure do |c|
+  c.filter_run_including current: true
+  c.run_all_when_everything_filtered = true
+end
+```
+
+```ruby
+describe Post
+  describe '#to_param', focus: true do
+    it 'returns the slug attribute'
+  end
+end
+```
+
+RSpec will now only run examples tagged with ***focus***. When no examples are tagged, it will run everything. Alternatively, you could filter examples from the command line:
+
+```bash
+$ rspec --tag focus:true
+```
+
+Alternative RSpec version >= 3.0
+
+```ruby
+RSpec.configure do |c|
+  c.treat_symbols_as_metadata_keys_with_true_values = true
+end
+```
+
+```ruby
+describe Post
+  describe '#to_param', :focus do
+    it 'returns the slug attribute'
+  end
+end
+```
+
 ####Altering how examples are run
+
+[ResqueSpec](https://github.com/leshill/resque_spec) is a nice library to fake running background jobs with [Resque](https://github.com/resque/resque). It will queue jobs in a simple in-memory hash, which allows you to easily set expectations on what gets queued:
+
+```ruby
+it 'mails a PDF form to the user' do
+  User.create! email: 'foo@example.com'
+  expect(PdfMailerJob).to have_queue_size_of(1)
+end
+```
+
 
 ####Altering example context
