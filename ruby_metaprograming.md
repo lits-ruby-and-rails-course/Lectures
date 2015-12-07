@@ -202,7 +202,7 @@ obj.method()
 
 When you call a ***method***, Ruby looks into the object's ***class*** and finds the ***method*** there. We need to know about two new concepts: the ***receiver*** and the ***ancestors chain***. The ***receiver*** is simply the ***object*** that you call a ***method*** on.
 
-Ruby method lookup is called ***One step to the right, then up***
+Ruby method lookup is called ***One step to the right, then up***.
 
 For example, if you write ***obj.method()***, then ***obj*** is the ***receiver***.
 
