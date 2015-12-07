@@ -202,6 +202,8 @@ obj.method()
 
 When you call a ***method***, Ruby looks into the object's ***class*** and finds the ***method*** there. We need to know about two new concepts: the ***receiver*** and the ***ancestors chain***. The ***receiver*** is simply the ***object*** that you call a ***method*** on.
 
+Ruby method lookup is called ***One step to the right, then up***
+
 For example, if you write ***obj.method()***, then ***obj*** is the ***receiver***.
 
 To understand the concept of an ancestors chain, just look at any **Ruby** ***class***. Then imagine moving from the ***class*** into its ***superclass***, then into the ***superclass's*** ***superclass***, and so on until you reach **Object** (the default superclass) and then, finally, **BasicObject** (the root of the Ruby class hierarchy). The path of classes you just traversed is called the ***"ancestors chain"*** of the class (the ancestors chain also includes modules).
