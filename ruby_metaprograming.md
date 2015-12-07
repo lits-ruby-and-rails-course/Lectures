@@ -623,7 +623,7 @@ string.instance_eval do
   end
 end   
 
-string. make_lowercase #=> "this is string object"
+string.make_lowercase #=> "this is string object"
 
 "Second String object".make_lowercase
 #=> NoMethodError: undefined method ‘make_lowercase’ for "Second String object":String
