@@ -106,28 +106,28 @@ class Profile
 end
 
 users = [{
-	name: 'Steve',
-	age: 23,
-	email: 'steve.smith@example.com',
-	password: 'supersecurepassword' 
+    name: 'Steve',
+    age: 23,
+    email: 'steve.smith@example.com',
+    password: 'supersecurepassword' 
 },{
-	name: 'John',
-	age: 30,
-	email: 'john.simpson@example.com',
-	password: 'supersecurepassword' 
+    name: 'John',
+    age: 30,
+    email: 'john.simpson@example.com',
+    password: 'supersecurepassword' 
 },{
-	name: 'Mary',
-	age: 57,
-	email: 'mary.piter@example.com',
-	password: 'supersecurepassword' 
+    name: 'Mary',
+    age: 57,
+    email: 'mary.piter@example.com',
+    password: 'supersecurepassword' 
 }]
 
 profiles = users.map do |user_setting|
-	profile = Profile.new
-	user_setting.each_key do |key|
-		profile.send(key+'=', user_settings[key])
-	end
-	profile
+    profile = Profile.new
+    user_setting.each_key do |key|
+        profile.send("#{key}=", user_setting[key])
+    end
+    p profile
 end
 ``` 
 
