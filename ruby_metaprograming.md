@@ -454,7 +454,7 @@ cat.may #=> May!
 ```
 
 - ***Objects*** in Ruby only store the ***state***. Its behaviour comes from its ***class definition***.
-- Objects can also have methods that are ***independent*** of the parent class definition. They are called ***singleton methods*** and are stored on the ***metaclass*** of the object. The metaclass is typically invisible to the programmer. Metaclass is also called: **EigenClass** or **SinglenotClass**.
+- Objects can also have methods that are ***independent*** of the parent class definition. They are called ***singleton methods*** and are stored on the ***metaclass*** of the object. The metaclass is typically invisible to the programmer. Metaclass is also called: **EigenClass** or **SingletonClass**.
 
 ```ruby
 class Object
@@ -631,7 +631,7 @@ string.make_lowercase #=> "this is string object"
 #=> NoMethodError: undefined method ‘make_lowercase’ for "Second String object":String
 ```
 
-So with ***instance_eval***, the method is only defined for that single instance of a string. The same if using singlenot methods.
+So with ***instance_eval***, the method is only defined for that single instance of a string. The same if using singleton methods.
 
 Remember that any class is an instance of a Class class, and therefor is an object ?
 What I want to say is:  ***instance_eval*** on a Class will define singleton class methods. Or simply class methods.
